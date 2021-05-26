@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>继承</title>
+  <script>
+    
+    function Person(name){
+      this.name = name
+      this.sum = ()=>alert(name)
+    }
+    Person.prototype.age = 10
+    
+   //原型链继承
+   function Per(){
+     this.name = 'ker'
+   }
+   Per.prototype = new Person('测试');
+   let per1 = new Per();
+  //  console.log(per1.name,per1.sum(),per1.age)
+   //构造函数继承
+   function Con(){
+     Person.call(this,"jer")
+     this.age = 12
+   }
+   let con1 = new Con()
+  //  console.log(con1.age,con1.name)
+  //组合继承
+  function SubType(name){
+    Person.call(this,name)
+  }
+  SubType.prototype = new Person();
+  let sub = new SubType("gar");
+  // console.log(sub.name,sub.age)
+  //原型式继承
+  function content(obj){
+    function F(){
+      this.len = 2
+    }
+    F.prototype = obj;
+    
+    return new F()
+  }
+  let sup = new Person("原型式继承");
+  let sup1 = content(sup)
+  // console.log(sup1.name,sup1.age,sup1.len,sup1 instanceof Person);
+  //寄生式继承
+  function subobject(obj){
+    let sub = content(obj);
+    sub.name="寄生式继承";
+    return sub;
+  }
+  let sup2 = new subobject(sup);
+  //  console.log(sup2.name,sup2.age,sup2.len,sup2 instanceof Person,typeof sup2);
+  //寄生组合式继承
+  let con = content(Person.prototype);
+  function Sub(){
+    Person.call(this,"寄生组合式继承");
+  }
+  Sub.prototype = con
+  con.constructor = Sub;
+  let sub1 = new Sub();
+  console.log(sub1.age,sub1.name)
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

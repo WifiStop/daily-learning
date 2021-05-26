@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>apply</title>
+  <script>
+    Function.prototype.apply = function (context,args=[]){
+      const ctx = context || window;
+      const fuc =  Symbol();
+      ctx[fuc] = this;
+      const res = args.length>0?ctx[fuc](...args):ctx[fuc]()
+      delete ctx[fuc]
+      return res
+    }
+    let obj = {a:1}
+    const testApply = function (arg1,arg2){
+      console.log(this.a,arg2)
+    }
+    testApply.apply(obj,[11,22])
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

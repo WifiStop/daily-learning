@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bind</title>
+  <script>
+    Function.prototype.bind = function (context,...args){
+      const fn = this;
+      args=args?args:[];
+      return function newFn(...newFnArgs){
+        if(this instanceof newFn){
+            return new fn(...args,...newFnArgs)
+        }
+        return fn.apply(context,[...args,...newFnArgs])
+      }
+    } 
+    let obj={a:1};
+    const bindTest = function (args1) {
+      console.log(this.a)
+    }
+    // bindTest.mybind(obj,"测试")()
+    bindTest.bind(obj,"测试")()
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

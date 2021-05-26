@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>call</title>
+  <script>
+    Function.prototype.call = function (context, ...args) {
+      let cxt = context || window;
+      
+      let func = Symbol();
+      cxt[func] = this;
+     
+      args = args ? args : [];
+      const res = args.length > 0 ? cxt[func](...args) : cxt[func]();
+      console.log(res,"+++++++++++")
+      delete cxt[func];
+      return res
+    }
+
+    const obj = {a:1}
+    const test = function (arg1){
+      console.log(this,arg1,"====")
+      
+    }
+    test.call(obj,"测试")
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

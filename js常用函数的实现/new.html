@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function myNew(ctor,...args){
+      if(typeof ctor != 'function') throw 'ctor must be a function'
+      let newObj = Object.create(ctor.prototype);
+      let ctorReturnResult = ctor.apply(newObj,args);
+      let isObject = typeof ctorReturnResult === 'object' && ctorReturnResult !== null;
+      let isFunction = typeof ctorReturnResult === 'function'
+      if(isObject||isFunction) return ctorReturnResult
+      return newObj
+    }
+    const Person = function (name){
+      this.name=name
+    }
+    Person.prototype.log=function(){
+      console.log("我的名字"+this.name)
+    }
+    const p1 = myNew(Person,'new')
+    p1.log()
+    console.log(p1.name)
+  </script>
+</head>
+<body>
+  
+</body>
+</html>
