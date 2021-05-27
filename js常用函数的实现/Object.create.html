@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Object.create</title>
+  <script>
+    Object.create = function (proto, propertiesObject) {
+      if (typeof proto !== 'object' && typeof proto !== 'function') {
+        throw new TypeError("Object prototype may only be an Object: " + proto);
+      } else if (proto === null) {
+        throw new Error("This browser's implementation of Object.create is a shim and doesn't support 'null' as the first argument.")
+      }
+      if (typeof propertiesObject !== 'undefined') throw new Error("This browser's implementation of Object.create is a shim and doesn't support a second argument.")
+      function F() {}
+      F.prototype = proto;
+      return new F()
+
+    }
+    let obj = {a:1}
+    let c1 = Object.create(obj)
+    let c2= Object.create(obj)
+    c1.a =2
+    c2.b=3
+    console.log(obj,c1.a,c2)
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

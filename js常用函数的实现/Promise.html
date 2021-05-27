@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promise</title>
+  <script>
+    class myPromise {
+      state = 'peading'
+      value = null
+      callbacks = []
+      constructor(fn) {
+        let resolve = value => {
+          if (value && (typeof value === 'object' || typeof value === 'function')) {
+            let then = value.then;
+            if (typeof then === 'function') {
+              then.call(value, resolve)
+              return
+            }
+          }
+          this.state = 'Fulfilled'
+          this.value = value;
+          this.execute()
+
+        }
+        let reject = reason => {
+          this.state = 'Rejected'
+          this.value = reason
+          this.execute()
+        }
+
+        try {
+          fn(resolve, reject)
+        } catch (err) {
+          reject(err)
+        }
+      }
+      then(onFulfilled, onRejected) {
+        return new myPromise((resolve, reject) => {
+          this.handle({
+            onFulfilled: onFulfilled || null,
+            onRejected: onRejected || null,
+            resolve,
+            reject
+          })
+        })
+      }
+      execute() {
+        setTimeout(() => {
+          this.callbacks.forEach((callback) => {
+            this.handle(callback);
+          });
+        }, 0);
+      }
+      handle(callback) {
+        if (this.state == 'peading') {
+          this.callbacks.push(callback);
+          return
+        }
+        let cb = this.state == 'Fulfilled' ? callback.onFulfilled : callback.onRejected;
+
+        if (!cb) {
+          cb = this.state == 'Fulfilled' ? callback.resolve : callback.reject;
+          cb(this.value)
+        }
+        try {
+          let ret = cb(this.value)
+          callback.resolve(ret)
+        } catch (e) {
+          callback.reject(e)
+        }
+
+      }
+      static resolve(value) {
+        if (value && value instanceof myPromise) return value
+        else if (value && (typeof value === 'object' || typeof value === 'function')) {
+          let then = value.then;
+          return new myPromise(res => { then(res) })
+        } else {
+          return new myPromise(res => res(value))
+        }
+      }
+      static reject(value) {
+        return new myPromise((res, rej) => rej(value))
+      }
+
+
+      static all(myPromiseList) {
+        if (!Array.isArray(myPromiseList)) throw new TypeError("Promise List must be array")
+        return new myPromise((res, rej) => {
+          try {
+            const promiseList = [];
+            myPromiseList.forEach((item, index, origin) => {
+              myPromise.resolve(item).then(value => {
+                promiseList.push(value)
+                if (promiseList.length == origin.length) res(promiseList)
+              }, reson => {
+                rej(reson)
+              })
+            })
+
+          } catch (err) {
+            rej(err)
+          }
+        })
+      }
+      static race(myPromiseList) {
+        if (!Array.isArray(myPromiseList)) throw new TypeError("Promise List must be array")
+        return new myPromise((res, rej) => {
+          try {
+            myPromiseList.forEach((item, index, origin) => {
+              myPromise.resolve(item).then(value => {
+                res(value)
+              }, reson => {
+                rej(reson)
+              })
+            })
+          } catch (err) {
+            rej(err)
+          }
+        })
+      }
+    }
+    //测试promise
+    new myPromise((res, rej) => {
+      setTimeout(() => { rej('测试') }, 1000)
+
+    }).then(data => {
+
+      return new myPromise(res => {
+        setTimeout(() => { res(data) }, 1000)
+      })
+    }, err => {
+      return 2
+    }).then(res => {
+      console.log(res)
+    })
+    //测试resolve
+    myPromise.resolve(new myPromise(res => res(3))).then(res => {
+      console.log(res, "测试resolve");
+    })
+    //测试reject
+    myPromise.reject(2).then(null, rej => {
+      console.error(rej)
+    })
+    //测试all
+    const test1 = new myPromise(res => { res(3) })
+    const test2 = new myPromise(res => { setTimeout(() => { res(34) }, 2000) })
+    myPromise.all([test1, test2]).then(res => {
+      console.log(res, "========")
+    })
+   //测试race
+   const test3 = new myPromise(res => { setTimeout(() => { res(34) }, 3000) })
+    const test4 = new myPromise(res => { setTimeout(() => { res(342) }, 2000) })
+    myPromise.race([test3, test4]).then(res => {
+      console.log(res, "========")
+    })
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
