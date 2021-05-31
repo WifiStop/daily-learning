@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jsonp</title>
+  <script>
+    window.onload = () => {
+      const jsonp = function (url, data) {
+        return new Promise((res, rej) => {
+          let dataString = url.indexOf('?') === -1 ? '?' : '';
+          let callbackName = `jsonpCB_${Date.now()}`;
+          url += `${dataString}callback=${callbackName}`;
+          if (data) {
+            for (let k in data) {
+              url += `${k}=${data[k]}`;
+            }
+          }
+          let jsNode = document.createElement('script');
+          jsNode.src = url;
+          window[callbackName] = result => {
+            delete window[callbackName];
+            document.body.removeChild(jsNode);
+            if (result) {
+              res(result)
+            } else {
+              rej('没有数据')
+            }
+          }
+          jsNode.addEventListener('error', () => {
+            delete window[callbackName];
+            document.body.removeChild(jsNode)
+            reject('js加载失败')
+          })
+          document.body.appendChild(jsNode)
+        })
+      }
+      jsonp('https://www.fastmock.site/mock/2ae383082cdd470dcb23c2c98acf7a13/llf-mock/test').then(res => {
+        console.log(res)
+      }, err => {
+        console.error(err)
+      })
+    }
+
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

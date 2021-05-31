@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>节流</title>
+  <script>
+    let throttle = (fn,time=1000)=>{
+      let flag = true;
+      return function(...args){
+        if(flag){
+          flag = false;
+          setTimeout(()=>{
+            flag = true;
+            fn(...args)
+          },time)
+        }
+      }
+    }
+    let testThrottle = throttle(()=>{
+      console.log("每隔time一定会运行一次")
+    })
+  </script>
+</head>
+<body>
+  <input oninput="testThrottle()">
+</body>
+</html>

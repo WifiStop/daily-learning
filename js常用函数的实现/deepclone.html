@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>deepclone</title>
+  <script>
+    let deepClone = (obj,hash = new Map())=>{
+      if(obj instanceof RegExp) return new RegExp(obj);
+      if(obj instanceof Date) return new Date(obj);
+      if(hash.has(obj)){
+        return hash.get(obj)
+      }
+      let constr = new obj.constructor();
+      hash.set(obj,constr);
+      for(let key in obj){
+        if(obj.hasOwnProperty(key)){
+          constr[key] = deepClone(obj[key],hash);
+        }
+      }
+      let symbolObj = Object.getOwnPropertySymbols(obj);
+      for(let i=0;i<symbolObj.length;i++){
+        if(obj.hasOwnProperty(symbolObj[i])){
+          constr[symbolObj[i]]=deepClone(obj[symbolObj[i]],hash)
+        }
+      }
+      return constr
+    }
+    let a = [1]
+    let b = deepClone(a);
+    a[0] = 2
+    b.forEach(element => {
+      let test = 3+element
+      console.log(element)
+    });
+   
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

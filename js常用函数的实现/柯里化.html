@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>柯里化</title>
+  <script>
+function sumFn(a,b,c){return a+ b + c};
+    function curry(fn, ...args) {
+      let fnLen = fn.length;
+      if (fnLen > args.length) {
+        return function (...args2) {
+          return curry(fn, ...args, ...args2)
+        }
+      } else {
+        return fn(...args)
+      }
+    }
+    let sum = curry(sumFn);
+    let a = sum(2)(3)(5)
+    let b = sum(2,3)(5)
+    console.log(a,b)
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
