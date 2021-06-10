@@ -1,5 +1,5 @@
 <template>
-  <div>{{book.name}}</div>
+  <div id="main" style="color:red">{{book.name}}</div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -19,3 +19,10 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+ #main{
+   
+   height: 100px;
+   width: 100px;
+ }
+</style>

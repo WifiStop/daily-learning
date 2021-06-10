@@ -22,7 +22,7 @@ module.exports = {
         corejs: 3,
       },
     ],
-    '@babel/proposal-class-properties',
-    '@babel/proposal-object-rest-spread',
+    '@babel/proposal-class-properties',// 类属性插件
+    '@babel/proposal-object-rest-spread',// 扩展运算符
   ],
 }

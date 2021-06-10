@@ -68,7 +68,6 @@ module.exports = {
   plugins:[
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title:'vue测试',
       filename:'index.html',
       template:path.resolve(__dirname,'./src/index.html')
     }),
