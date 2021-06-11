@@ -13,6 +13,13 @@ module.exports = {
   entry: {
     main: path.resolve(__dirname, './src/index.ts'),    
   },
+  cache:{
+      type: 'filesystem',
+        cacheLocation: path.resolve(__dirname, './cache'),
+        buildDependencies: {
+          config: [__filename],
+        }
+    },
   devServer:{
     port:3000,
     hot:true,
