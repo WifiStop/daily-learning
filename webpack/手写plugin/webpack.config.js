@@ -2,7 +2,8 @@ const path = require('path');
 const webpack = require('webpack')
 const HtmlWbpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const firstPlugin = require('./plugin/webpack-firstPlugin')
+const firstPlugin = require('./plugins/webpack-firstPlugin')
+const ClearWebpackPlugin = require('./plugins/clear-webpack-plugin')
 
 module.exports={
   mode:'development',
@@ -37,7 +38,8 @@ module.exports={
     new HtmlWbpackPlugin({
       template:path.resolve(__dirname,'src/index.html')
     }),
-    new CleanWebpackPlugin(),
+    new ClearWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new firstPlugin()
   ]
 }

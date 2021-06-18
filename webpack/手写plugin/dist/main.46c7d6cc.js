@@ -80,7 +80,7 @@ eval("\n\n//# sourceURL=webpack://plugin-demo/./src/index.js?");
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("6d48ac6ef59d2516b17c")
+/******/ 		__webpack_require__.h = () => ("46c7d6cc16e401eaeb44")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
