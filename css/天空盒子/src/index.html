@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>天空盒子</title>
+  <script>
+    var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+    var widthProportion = function () {
+      var doc = document.body || document.documentElement;
+      var p = doc.clientWidth;
+      var fontSize = p / 7.5;
+      if (fontSize >= 100) {
+        fontSize = 100;
+      }
+      return fontSize;
+    };
+    var changePage = function () {
+      document.getElementsByTagName('html')[0].setAttribute('style', 'font-size:' + widthProportion() +
+        'px');
+    };
+
+    changePage();
+    window.addEventListener(resizeEvt, changePage, false);
+  </script>
+</head>
+
+<body>
+  <div class="camera">
+    <div class="space" id="container">
+      <img class="front" src="//yun.dui88.com/tuia/junhehe/skybox/front.jpg" alt="" />
+      <img class="back" src="//yun.dui88.com/tuia/junhehe/skybox/back.jpg" alt="" />
+      <img class="left" src="//yun.dui88.com/tuia/junhehe/skybox/left.jpg" alt="" />
+      <img class="right" src="//yun.dui88.com/tuia/junhehe/skybox/right.jpg" alt="" />
+      <img class="bottom" src="//yun.dui88.com/tuia/junhehe/skybox/bottom.jpg" alt="" />
+      <img class="top" src="//yun.dui88.com/tuia/junhehe/skybox/top.jpg" alt="" />
+    </div>
+  </div>
+</body>
+
+</html>
